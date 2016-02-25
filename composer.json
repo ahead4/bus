@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ahead4\\Common\\": "src/"
+            "Ahead4\\Bus\\": "src/"
         }
     }
 }
