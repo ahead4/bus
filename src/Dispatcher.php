@@ -1,5 +1,6 @@
 <?php namespace Ahead4\Bus;
 
+use Queue;
 use Illuminate\Bus\Dispatcher as IlluminateDispatcher;
 
 class Dispatcher extends IlluminateDispatcher
@@ -13,6 +14,9 @@ class Dispatcher extends IlluminateDispatcher
 	 */
 	protected function pushCommandToQueue($queue, $command)
 	{
+		// TODO: This can be removed if the queue gets injected correctly (seems to be the default always?)
+		$queue = Queue::connection($command->connection);
+		
 		if (isset($command->queue, $command->delay)) {
 			return $queue->laterOn($command->queue, $command->delay, $command);
 		}
