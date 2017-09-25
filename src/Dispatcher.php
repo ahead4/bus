@@ -29,9 +29,6 @@ class Dispatcher extends IlluminateDispatcher
 			return $queue->later($command->delay, $command);
 		}
 
-		return $queue->push('Ahead4\Bus\CallQueuedHandler@call', [
-			'pipes'   => $this->pipes,
-			'command' => serialize($command),
-		]);
+		return $queue->push($command);
 	}
 }
