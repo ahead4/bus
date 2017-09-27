@@ -17,18 +17,21 @@ class Dispatcher extends IlluminateDispatcher
 		// TODO: This can be removed if the queue gets injected correctly (seems to be the default always?)
 		$queue = Queue::connection($command->connection);
 		
-		if (isset($command->queue, $command->delay)) {
-			return $queue->laterOn($command->queue, $command->delay, $command);
-		}
+		// if (isset($command->queue, $command->delay)) {
+		// 	return $queue->laterOn($command->queue, $command->delay, $command);
+		// }
 
-		if (isset($command->queue)) {
-			return $queue->pushOn($command->queue, $command);
-		}
+		// if (isset($command->queue)) {
+		// 	return $queue->pushOn($command->queue, $command);
+		// }
 
-		if (isset($command->delay)) {
-			return $queue->later($command->delay, $command);
-		}
+		// if (isset($command->delay)) {
+		// 	return $queue->later($command->delay, $command);
+		// }
 
-		return $queue->push($command);
+		return $queue->push('Ahead4\Bus\CallQueuedHandler@call', [
+			'pipes'   => $this->pipes,
+			'command' => serialize($command),
+		]);
 	}
 }

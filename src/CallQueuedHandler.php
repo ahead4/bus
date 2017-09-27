@@ -21,11 +21,9 @@ class CallQueuedHandler extends IlluminateCallQueuedHandler
 			unserialize($data['command'])
 		);
 
-		$this->dispatcher->pipeThrough($pipes)->dispatchNow($command, function ($handler) use ($job) {
-			$this->setJobInstanceIfNecessary($job, $handler);
-		});
+		$this->dispatcher->pipeThrough($pipes)->dispatchNow($command, $this->resolveHandler($job, $command));
 
-		if (! $job->isDeletedOrReleased()) {
+		if (!$job->isDeletedOrReleased()) {
 			$job->delete();
 		}
 	}

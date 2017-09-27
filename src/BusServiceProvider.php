@@ -16,10 +16,12 @@ class BusServiceProvider extends IlluminateBusServiceProvider
 				return $app['Illuminate\Contracts\Queue\Queue'];
 			});
 		});
+
 		$this->app->alias(
 			'Illuminate\Bus\Dispatcher',
 			'Illuminate\Contracts\Bus\Dispatcher'
 		);
+
 		$this->app->alias(
 			'Illuminate\Bus\Dispatcher',
 			'Illuminate\Contracts\Bus\QueueingDispatcher'
