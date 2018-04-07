@@ -14,23 +14,24 @@ class Dispatcher extends IlluminateDispatcher
 	 */
 	protected function pushCommandToQueue($queue, $command)
 	{
+		$class = 'Ahead4\Bus\CallQueuedHandler@call';
 		$queueData = [
 			'pipes'   => $this->pipes,
 			'command' => serialize($command),
 		];
 
         if (isset($command->queue, $command->delay)) {
-            return $queue->laterOn($command->queue, $command->delay, $queueData);
+            return $queue->laterOn($command->queue, $command->delay, $class, $queueData);
         }
 
         if (isset($command->queue)) {
-            return $queue->pushOn($command->queue, $queueData);
+            return $queue->pushOn($command->queue, $class, $queueData);
         }
 
         if (isset($command->delay)) {
-            return $queue->later($command->delay, $queueData);
+            return $queue->later($command->delay, $class, $queueData);
         }
 
-        return $queue->push($queueData);
+        return $queue->push($class, $queueData);
 	}
 }
